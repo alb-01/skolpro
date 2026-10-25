@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pauliskolan - Adminportal</title>
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- INLOGGNINGSSKÄRM FÖR ADMIN -->
+        <div id="adminLoginCard" class="card admin-login-box">
+            <div class="login-header">
+                <div class="brand-icon icon-center">P</div>
+                <h2>Admin Inloggning</h2>
+                <p class="login-sub">Pauliskolan Passersystem</p>
+            </div>
+
+            <form id="adminLoginForm">
+                <div class="form-group mb-16">
+                    <label for="adminPassword">Admin Lösenord</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-blue btn-full">Logga in som Admin</button>
+            </form>
+            <p id="loginError" class="login-error-text"></p>
+        </div>
+
+
+        <!-- HUVUDPANEL (DÖLJS INNAN INLOGGNING) -->
+        <div id="adminDashboard" class="hidden">
+
+            <header>
+                <div class="brand">
+                    <div class="brand-icon">P</div>
+                    <div class="brand-title">
+                        <h1>Pauliskolan Admin</h1>
+                        <p>Passersystem & Elevnärvaro</p>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="btn btn-logout">Logga ut</button>
+            </header>
+
+            <!-- FLIK-NAVIGERING (TABS) -->
+            <div class="tab-navigation">
+                <button id="tabBtnAttendance" class="tab-btn active" onclick="switchTab('attendance')">
+                    ⚡ Elevnärvaro & Loggar
+                </button>
+                <button id="tabBtnStudents" class="tab-btn" onclick="switchTab('students')">
+                    👥 Elevregister & Registrering
+                </button>
+            </div>
+
+            <!-- ==================================================== -->
+            <!-- FLIK 1: ELEVNÄRVARO & LOGGAR -->
+            <!-- ==================================================== -->
+            <div id="tabAttendanceSection" class="tab-content">
+
+                <!-- DATUM- OCH TIDSFILTER -->
+                <div class="card">
+                    <h2>🔍 Filtrera Närvaro per Datum & Timme</h2>
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label for="logDateFilter">Välj Datum</label>
+                            <input type="date" id="logDateFilter">
+                        </div>
+                        <div class="form-group">
+                            <label for="logSearchInput">Sök Klockslag, Namn eller ID</label>
+                            <input type="text" id="logSearchInput" placeholder="Ex. 20:49, Sara eller 12345...">
+                        </div>
+                        <div class="form-group filter-btn-group">
+                            <label>&nbsp;</label>
+                            <button class="btn btn-secondary" onclick="resetLogFilters()">Visa Alla / Nollställ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SÄKERHETSLOGG & REALTID -->
+                <div class="card">
+                    <div class="card-header-flex">
+                        <h2>Säkerhetslogg & Närvarohistorik</h2>
+                        <span class="live-indicator"><span class="pulse-dot"></span> LIVE REALTID</span>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Datum & Tid</th>
+                                    <th>Elevnamn</th>
+                                    <th>Elev-ID</th>
+                                    <th>Resultat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accessLogBody">
+                                <tr>
+                                    <td colspan="4" class="text-center">Laddar säkerhetsloggar...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================== -->
+            <!-- FLIK 2: ELEVREGISTER & REGISTRERING -->
+            <!-- ==================================================== -->
+            <div id="tabStudentsSection" class="tab-content hidden">
+
+                <!-- REGISTRERA NY ELEV -->
+                <div class="card">
+                    <h2>Registrera ny elev</h2>
+                    <form id="addStudentForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="newStudentId">Elev-ID (t.ex. 12987)</label>
+                                <input type="text" id="newStudentId" placeholder="12987" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newName">För- och Efternamn</label>
+                                <input type="text" id="newName" placeholder="Paul Svensson" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">Lösenord</label>
+                                <input type="password" id="newPassword" placeholder="9876" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="newCardId">Kort-ID (Valfritt)</label>
+                                <input type="text" id="newCardId" placeholder="PLS-010">
+                            </div>
+                            <div class="form-group">
+                                <label for="photoFile">Profilbild (Laddas upp direkt)</label>
+                                <input type="file" id="photoFile" accept="image/*">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-blue mt-16" id="saveStudentBtn">Spara Elev i
+                            Supabase</button>
+                    </form>
+                </div>
+
+                <!-- ELEVREGISTER MED SÖK & BEHÖRIGHETSTOGGLE -->
+                <div class="card">
+                    <h2>Elevregister</h2>
+                    <input type="text" id="searchInput" class="search-bar"
+                        placeholder="🔍 Sök på namn, Elev-ID eller Kort-ID...">
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Bild</th>
+                                    <th>Elev</th>
+                                    <th>Elev-ID</th>
+                                    <th>Kort-ID</th>
+                                    <th>Status</th>
+                                    <th>Åtgärd</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center">Laddar elever...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Dold filväljare för att byta bild på existerande elever -->
+    <input type="file" id="changePhotoInput" accept="image/*" class="hidden">
+
+    <div id="notification"></div>
+
+    <!-- JavaScript -->
+    <script src="admin-script.js"></script>
+
+</body>
+
+</html>

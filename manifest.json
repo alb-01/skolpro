@@ -1,0 +1,17 @@
+{
+    "name": "Pauliskolan Skolkort",
+    "short_name": "Skolkort",
+    "description": "Digitalt skolkort för Pauliskolan",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#0f172a",
+    "icons": [
+        {
+            "src": "https://ui-avatars.com/api/?name=P+S&background=2563eb&color=fff&size=512",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

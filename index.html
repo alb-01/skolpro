@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Pauliskolan - Digitalt Skolkort</title>
+
+    <!-- PWA & Inställningar -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- CSS -->
+    <!-- Ändra från ?v=4 till ?v=5 så tvingas webbläsaren att hämta den nya filen -->
+    <link rel="stylesheet" href="style.css?v=5">
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- ======================================== -->
+        <!-- 1. INLOGGNINGSSIDA -->
+        <!-- ======================================== -->
+        <div id="loginPage" class="split-card">
+
+            <div class="card-left-dark">
+                <div class="brand-header">
+                    <div class="brand-logo-icon">P</div>
+                    <span class="brand-title">PAULISKOLAN</span>
+                </div>
+                <div class="brand-body">
+                    <h1>Digitalt Skolkort</h1>
+                    <p>Skanna din dynamiska QR-kod för snabb och säker passeringskontroll i skolans lokaler.</p>
+                </div>
+            </div>
+
+            <div class="card-right-white">
+                <div class="top-mini-brand">
+                    <div class="mini-logo-icon">P</div>
+                    <span>PAULISKOLAN</span>
+                </div>
+
+                <h2>Välkommen</h2>
+                <p class="subtitle">Logga in med ditt Elev-ID för åtkomst</p>
+
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="studentId">Elev-ID</label>
+                        <input type="text" id="studentId" placeholder="Ex. 12987" required autocomplete="username">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Lösenord</label>
+                        <input type="password" id="password" placeholder="••••••••" required
+                            autocomplete="current-password">
+                    </div>
+
+                    <div class="remember-group">
+                        <input type="checkbox" id="rememberMe" checked>
+                        <label for="rememberMe">Kom ihåg mig på denna enhet</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-blue">Logga in &rarr;</button>
+                </form>
+
+                <div id="loginError" class="error-message"></div>
+            </div>
+        </div>
+
+
+        <!-- ======================================== -->
+        <!-- 2. DIGITALT PASS -->
+        <!-- ======================================== -->
+        <div id="cardPage" class="pass-container hidden">
+
+            <!-- Vänster kortsektion -->
+            <div class="pass-left">
+                <!-- Mörkt toppfält -->
+                <div class="pass-dark-header">
+                    <div class="header-top-row">
+                        <div class="brand-icon">P</div>
+                        <span class="digital-pass-tag">DIGITAL PASS</span>
+                    </div>
+                    <div class="header-title-block">
+                        <h2>PAULISKOLAN</h2>
+                        <p>Gymnasiebehörighet & Passersystem</p>
+                    </div>
+                </div>
+
+                <!-- Vit underdel för elevuppgifterna -->
+                <div class="pass-white-body">
+                    <div class="student-photo-container">
+                        <img id="studentPhoto" src="" alt="Elevfoto">
+                    </div>
+
+                    <div class="student-details-list">
+                        <div class="detail-item">
+                            <span class="label">Elev</span>
+                            <span id="studentName" class="value">Laddar...</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Elev-ID</span>
+                            <span id="displayStudentId" class="value">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Kort-ID</span>
+                            <span id="cardId" class="value">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Senaste inpassage</span>
+                            <span id="lastAccessTime" class="value text-blue">Hämtar...</span>
+                        </div>
+                    </div>
+
+                    <div id="authorizationStatus" class="status-pill">
+                        ✓ Behörig elev
+                    </div>
+                </div>
+            </div>
+
+            <!-- Höger kortsektion -->
+            <div class="pass-right">
+                <div class="door-header">
+                    <h3>Dörröppning</h3>
+                    <p>Tryck nedan för att skanna vid dörren</p>
+                </div>
+
+                <!-- Streckad ram med QR-kod & Instruktionstext -->
+                <div id="qrContainer" class="qr-code-frame hidden">
+                    <div id="qrcode"></div>
+                    <div class="qr-instruction">
+                        Håll koden mot<br>läsaren vid dörren
+                    </div>
+                </div>
+
+                <!-- Dörröppningsknapp -->
+                <button id="useCardButton" class="btn btn-grey-action">
+                    ⚡ Använd digitalt skolkort
+                </button>
+
+                <!-- Levande timer text under knappen -->
+                <div id="accessMessage" class="live-timer-text"></div>
+
+                <!-- APPLE WALLET KNAPP (Lägg till denna) -->
+                <button id="appleWalletBtn" class="btn btn-wallet">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                        <path
+                            d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.67-.82 1.13-1.96.99-3.1-.98.04-2.19.66-2.88 1.47-.62.72-1.17 1.88-.99 3.01 1.09.08 2.22-.56 2.88-1.38z" />
+                    </svg>
+                    Spara i Apple Wallet
+                </button>
+
+                <!-- Logga ut knapp -->
+                <button id="logoutButton" class="btn btn-outline-logout">
+                    Logga ut
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
+    <!-- Registrera Service Worker för PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW-registrering misslyckades:', err));
+            });
+        }
+    </script>
+</body>
+
+</html>

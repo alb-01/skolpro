@@ -1,0 +1,516 @@
+/* ========================================
+   GLOBAL STYLING
+   ======================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #0b0f19;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    color: #0f172a;
+}
+
+.main-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ========================================
+   1. INLOGGNINGSSIDA (SPLIT DESKTOP)
+   ======================================== */
+.split-card {
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.card-left-dark {
+    flex: 1;
+    background: #151c28;
+    color: #ffffff;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: #3b82f6;
+    color: white;
+    font-weight: 800;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.brand-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #94a3b8;
+}
+
+.brand-body h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.brand-body p {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.card-right-white {
+    flex: 1.1;
+    background: #ffffff;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.top-mini-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+}
+
+.mini-logo-icon {
+    width: 22px;
+    height: 22px;
+    background: #0f172a;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.card-right-white h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 24px;
+}
+
+.input-group {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #0f172a;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.remember-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.remember-group input[type="checkbox"] {
+    accent-color: #2563eb;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.btn-blue {
+    width: 100%;
+    padding: 13px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 10px;
+    min-height: 16px;
+    text-align: center;
+}
+
+
+/* ========================================
+   2. DIGITALT PASS
+   ======================================== */
+.pass-container {
+    display: flex;
+    width: 100%;
+    max-width: 780px;
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* VÄNSTER SEKTION */
+.pass-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+}
+
+/* Mörkt toppfält */
+.pass-dark-header {
+    background: #151c24;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-icon {
+    width: 32px;
+    height: 32px;
+    background: #333e4f;
+    color: #ffffff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.digital-pass-tag {
+    font-size: 10px;
+    font-weight: 700;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 4px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.header-title-block h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+}
+
+.header-title-block p {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+/* Vit underdel för elevuppgifter */
+.pass-white-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    background: #ffffff;
+}
+
+.student-photo-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.student-photo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.student-details-list {
+    margin-bottom: 20px;
+}
+
+.student-details-list .detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.student-details-list .label {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.student-details-list .value {
+    color: #0f172a;
+    font-weight: 800;
+}
+
+/* Ändrad från blå till mörk text */
+.text-blue {
+    color: #0f172a !important;
+}
+
+/* Status-pill (Grön behörig / Röd spärrad) */
+.status-pill {
+    background: #e6f7ed;
+    color: #10b981;
+    border: 1px solid #d1fae5;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.not-authorized .status-pill {
+    background: #fef2f2;
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+
+/* HÖGER SEKTION */
+.pass-right {
+    flex: 1.15;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+}
+
+.door-header h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.door-header p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+}
+
+/* Streckad ram runt QR-koden och texten */
+.qr-code-frame {
+    width: 100%;
+    border: 1px dashed #cbd5e1;
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: #ffffff;
+    margin-bottom: 16px;
+}
+
+/* Exakt storlek på QR-koden */
+#qrcode {
+    width: 170px;
+    height: 170px;
+    flex-shrink: 0;
+}
+
+#qrcode img,
+#qrcode canvas {
+    width: 170px !important;
+    height: 170px !important;
+    display: block;
+}
+
+/* Text bredvid QR-koden */
+.qr-instruction {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.35;
+}
+
+/* Grå knapp för "Använd digitalt skolkort" */
+.btn-grey-action {
+    width: 100%;
+    padding: 12px;
+    background: #7f8a98;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    outline: none;
+}
+
+.btn-grey-action:hover {
+    background: #6d7886;
+}
+
+/* Ändrad från blå färg (#2563eb) till dämpad grå färg (#64748b) */
+.live-timer-text {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    margin: 10px 0 12px 0;
+    min-height: 18px;
+}
+
+/* Apple Wallet knapp */
+.btn-wallet {
+    width: 100%;
+    padding: 11px;
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+}
+
+.btn-wallet:hover {
+    background: #1a1a1a;
+    border-color: #334155;
+}
+
+/* Logga ut knapp */
+.btn-outline-logout {
+    width: 100%;
+    padding: 10px;
+    background: #ffffff;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-outline-logout:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+@media (max-width: 768px) {
+
+    .pass-container,
+    .split-card {
+        flex-direction: column;
+    }
+
+    .card-left-dark {
+        display: none;
+    }
+
+    .qr-code-frame {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

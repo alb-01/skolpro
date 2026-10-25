@@ -1,0 +1,39 @@
+{
+    "formatVersion": 1,
+    "passTypeIdentifier": "pass.com.pauliskolan.skolkort",
+    "serialNumber": "00000",
+    "teamIdentifier": "DEMO123456",
+    "organizationName": "Pauliskolan",
+    "description": "Digitalt Skolkort för Pauliskolan",
+    "logoText": "Pauliskolan",
+    "foregroundColor": "rgb(255, 255, 255)",
+    "backgroundColor": "rgb(15, 23, 42)",
+    "storeCard": {
+        "primaryFields": [
+            {
+                "key": "name",
+                "label": "ELEV",
+                "value": "Namn"
+            }
+        ],
+        "secondaryFields": [
+            {
+                "key": "student_id",
+                "label": "ELEV-ID",
+                "value": "ID"
+            },
+            {
+                "key": "card_id",
+                "label": "KORT-ID",
+                "value": "Kort"
+            }
+        ]
+    },
+    "barcodes": [
+        {
+            "format": "PKBarcodeFormatQR",
+            "message": "placeholder",
+            "messageEncoding": "iso-8859-1"
+        }
+    ]
+}
